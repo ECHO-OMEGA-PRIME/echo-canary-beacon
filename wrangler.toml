@@ -1,0 +1,27 @@
+name = "echo-canary-beacon"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+[[kv_namespaces]]
+binding = "HITS"
+id = "9d7daa9b31684bdcbda65dffbdfc4c53"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "f346ba62ad2d4043b2ed1e0ee235fc46"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "echo-canary-beacon-db"
+database_id = "139468f5-9574-445d-8dae-2481abc4175b"
+
+[[services]]
+binding = "SWARM_BRAIN"
+service = "echo-swarm-brain"
+
+[triggers]
+crons = ["*/2 * * * *", "0 3 * * *", "0 6 * * 1"]
+
+[vars]
+ADMIN_KEY = "echo-canary-admin-2026"
+WORKER_VERSION = "2.0.0"

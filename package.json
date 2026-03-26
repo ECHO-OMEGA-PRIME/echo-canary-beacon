@@ -1,0 +1,19 @@
+{
+  "name": "echo-canary-beacon",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Canary deployment monitoring beacon for the ECHO OMEGA PRIME fleet",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^3.99.0"
+  },
+  "dependencies": {
+    "hono": "^4.12.8"
+  }
+}
