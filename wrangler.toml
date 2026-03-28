@@ -24,3 +24,7 @@ crons = ["*/2 * * * *", "0 3 * * *", "0 6 * * 1"]
 
 [vars]
 WORKER_VERSION = "2.0.0"
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "echo_metrics"
