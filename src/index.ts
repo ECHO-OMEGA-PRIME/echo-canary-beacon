@@ -21,6 +21,7 @@ export interface Env {
   SWARM_BRAIN: Fetcher;
   ADMIN_KEY: string;
   WORKER_VERSION: string;
+  ECHO_API_KEY: string;
 }
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -92,7 +93,7 @@ interface HealthCheckResult {
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 const SERVICE_NAME = 'echo-canary-beacon';
-const API_KEY = 'echo-omega-prime-forge-x-2026';
+// API_KEY pulled from env at runtime — never hardcoded
 const DEFAULT_ERROR_THRESHOLD = 0.05;
 const DEFAULT_LATENCY_THRESHOLD_MS = 5000;
 const DEFAULT_MIN_DURATION_MINUTES = 30;
@@ -149,9 +150,9 @@ function cors(): Response {
   });
 }
 
-function checkAuth(request: Request): boolean {
+function checkAuth(request: Request, env: Env): boolean {
   const key = request.headers.get('X-Echo-API-Key');
-  return key === API_KEY;
+  return key === (env.ECHO_API_KEY || '');
 }
 
 function generateId(): string {
@@ -725,7 +726,7 @@ async function cronWeeklySummary(env: Env): Promise<void> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Echo-API-Key': API_KEY,
+        'X-Echo-API-Key': env.ECHO_API_KEY || '',
       },
       body: JSON.stringify({
         author_id: 'canary-beacon',
@@ -1424,7 +1425,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
 
   // All other endpoints require auth
-  if (!checkAuth(request)) {
+  if (!checkAuth(request, env)) {
     log('warn', 'auth_rejected', {
       path,
       method,
