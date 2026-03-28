@@ -127,6 +127,12 @@ function jsonResponse(data: unknown, status = 200): Response {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block',
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
     },
   });
 }

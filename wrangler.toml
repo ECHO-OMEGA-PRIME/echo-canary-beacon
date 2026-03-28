@@ -23,5 +23,4 @@ service = "echo-swarm-brain"
 crons = ["*/2 * * * *", "0 3 * * *", "0 6 * * 1"]
 
 [vars]
-ADMIN_KEY = "echo-canary-admin-2026"
 WORKER_VERSION = "2.0.0"
