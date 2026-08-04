@@ -92,6 +92,15 @@ h2{color:#0f3460}p{color:#999;line-height:1.6}.spinner{border:3px solid #333;bor
 })();
 </script></body></html>`;
 
+function constantTimeTokenEqual(presented, expected) {
+  const length = Math.max(presented.length, expected.length);
+  let mismatch = presented.length ^ expected.length;
+  for (let index = 0; index < length; index += 1) {
+    mismatch |= (presented.charCodeAt(index) || 0) ^ (expected.charCodeAt(index) || 0);
+  }
+  return mismatch === 0;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -125,8 +134,11 @@ export default {
 
     // View all captured data (authenticated)
     if (path === '/captures') {
-      const key = url.searchParams.get('key');
-      if (key !== env.ADMIN_KEY) return json({ error: 'unauthorized' }, 403, request);
+      const key = url.searchParams.get('key')?.trim() || '';
+      const expected = env.ADMIN_KEY?.trim() || '';
+      if (!key || !expected || !constantTimeTokenEqual(key, expected)) {
+        return json({ error: 'unauthorized' }, 403, request);
+      }
       const list = await env.HITS.list({ prefix: 'hit:' });
       const captures = [];
       for (const k of list.keys) {
