@@ -24,6 +24,12 @@ export interface Env {
   ECHO_API_KEY: string;
 }
 
+function requireEchoApiKey(env: Env): string {
+  const key = env.ECHO_API_KEY?.trim();
+  if (!key) throw new Error('ECHO_API_KEY is required for authenticated internal calls');
+  return key;
+}
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'fatal';
@@ -150,9 +156,19 @@ function cors(): Response {
   });
 }
 
+function constantTimeTokenEqual(presented: string, expected: string): boolean {
+  const length = Math.max(presented.length, expected.length);
+  let mismatch = presented.length ^ expected.length;
+  for (let index = 0; index < length; index += 1) {
+    mismatch |= (presented.charCodeAt(index) || 0) ^ (expected.charCodeAt(index) || 0);
+  }
+  return mismatch === 0;
+}
+
 function checkAuth(request: Request, env: Env): boolean {
-  const key = request.headers.get('X-Echo-API-Key');
-  return key === (env.ECHO_API_KEY || '');
+  const key = request.headers.get('X-Echo-API-Key')?.trim() || '';
+  const expected = env.ECHO_API_KEY?.trim();
+  return Boolean(key && expected && constantTimeTokenEqual(key, expected));
 }
 
 function generateId(): string {
@@ -726,7 +742,7 @@ async function cronWeeklySummary(env: Env): Promise<void> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Echo-API-Key': env.ECHO_API_KEY || '',
+        'X-Echo-API-Key': requireEchoApiKey(env),
       },
       body: JSON.stringify({
         author_id: 'canary-beacon',

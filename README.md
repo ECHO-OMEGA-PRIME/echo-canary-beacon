@@ -81,3 +81,7 @@ curl -s "https://echo-canary-beacon.bmcii1976.workers.dev/captures?key=YOUR_KEY"
 ## Data Retention
 
 All captured data expires after 30 days (KV `expirationTtl: 86400 * 30`).
+
+## Python runtime
+
+The production FORGE API is maintained in this repository alongside the Worker. See [PYTHON_RUNTIME.md](PYTHON_RUNTIME.md) for its dependencies, fail-closed configuration, tests, and deployment gate.
