@@ -1,3 +1,34 @@
+> ## ✅ TESTED AND TRANSFERRED
+>
+> This repository has been consolidated into the canonical account. All code, fixes, tests, and
+> documentation now live at:
+>
+> **→ https://github.com/echoomegaprime/echo-canary-beacon**
+>
+> - Destination commit: `635b6e5cf01a438b2ef2103303b181d354a3f861`
+> - Cert Forge certificate: `cert_a031ba2459392697ad654a9dd2c598fa9ffd6d08` — `PRODUCTION_READY`
+>   (evidence Merkle root `cf50803a8d42be6503727e4bb634445f296ca680e272e1e57eed4695dcd36f63`,
+>   verify at https://cert-api.echosforge.com/v1/certifications/cert_a031ba2459392697ad654a9dd2c598fa9ffd6d08/verdict)
+> - GitHub App Suite conformance: manual receipt at
+>   [`.echo/repo-health.md`](https://github.com/echoomegaprime/echo-canary-beacon/blob/main/.echo/repo-health.md)
+>   in the destination repo (GitHub App Suite auto-posting affected by build #29466 on this
+>   account; this is the documented workaround)
+> - Transfer date: 2026-08-12
+>
+> **Important — this README was wrong.** It describes a "honeypot tracking pixel" tool that was
+> never actually deployed. The real product in this repo is a **canary deployment monitor** with
+> automatic rollback (routes `/deploy`, `/deployments`, `/history`, cron-driven health checks) —
+> a Cloudflare Worker plus a Python FastAPI service on FORGE. The honeypot code was dead,
+> unreferenced by `wrangler.toml`, and has been removed; the destination repo's README describes
+> the real product. During transfer, the dashboard route (`GET /`) was also found to have no
+> authentication, exposing worker names/versions/health data — now fixed. See
+> [SECURITY.md in the destination repo](https://github.com/echoomegaprime/echo-canary-beacon/blob/main/SECURITY.md).
+>
+> This legacy repository is preserved for provenance and is not actively maintained. Do not
+> open issues or PRs here — use the destination repository above.
+
+---
+
 # Echo Canary Beacon
 
 Honeypot tracking pixel and canary link server. Deploys invisible tracking beacons in emails and documents to detect unauthorized access, forwarding, or data leaks.
